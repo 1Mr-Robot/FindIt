@@ -1,0 +1,15 @@
+#Entorno virtual
+/venv/
+
+#Base de datos
+db.sqlite3
+.env
+
+#media
+media/
+
+#caché
+__pycache__/
+
+#VS code
+.vscode/
