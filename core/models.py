@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 
 # -------------------------
 # CATÁLOGOS
@@ -53,7 +54,7 @@ class Item(models.Model):
     color = models.ForeignKey(ItemColor, on_delete=models.CASCADE)
     zone = models.ForeignKey(CampusZone, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='items/')
-    found_date = models.DateTimeField(default=models.functions.Now)
+    found_date = models.DateTimeField(default=timezone.now)
     status = models.ForeignKey(ItemStatus, on_delete=models.CASCADE)
     creator_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
@@ -71,7 +72,7 @@ class Claim(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     proof_description = models.TextField()
     receipt_code = models.CharField(max_length=25, unique=True)
-    resolved = models.DateTimeField(default=models.functions.Now)
+    resolved = models.DateTimeField(default=timezone.now)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
