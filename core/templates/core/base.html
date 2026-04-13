@@ -33,7 +33,49 @@
 
     <meta name="robots" content="index, follow, max-image-preview:large">
     
+    {# Tailwind #}
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    {# CSS propio #}
+    <link rel="stylesheet" href="{% static 'core/styles/layout.css' %}">
     {% block extra_style %}{% endblock extra_style %}
+    {# Fuentes de texto #}
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    {# Configuración de Tailwind #}
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-green": "#2D7A32",
+                        "primary-orange": "#ec5b13",
+                        "primary-light": "#5cb85c",
+                        "background-light": "#e0e4e8",
+                        "background-dark": "#221610",
+                    },
+                    fontFamily: {
+                        "display": ["Lexend", "sans-serif"],
+                        "sans": ["Public Sans", "sans-serif"],
+                        "serif": ["Times New Roman", "serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    transitionDuration: {
+                        "2000": "2000ms",
+                    }
+                },
+            },
+        }
+    </script>
 </head>
 
 <body>
