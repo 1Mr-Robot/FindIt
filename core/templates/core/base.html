@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ title|default:'FindIt Campus' }}</title>
+    <meta name="description" content="{{ description|default:'App web para ayudar a los alumnos a reportar, buscar y encontrar objetos perdidos dentro del campus universitario.' }}">
+    <meta name="author" content="Equipo 2 - Administración de proyectos de software">
+    {#<link rel="icon" href="{% static 'favicon.png' %}" type="image/png">#}
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
+    <meta name="theme-color" content="#5CB85C">
+
+    <meta property="og:title" content="{{ title|default:'FindIt Campus' }}">
+    <meta property="og:description" content="{{ og_description|default:'App web para ayudar a los alumnos a reportar, buscar y encontrar objetos perdidos dentro del campus universitario.' }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:image" content="{{ og_image|default:'' }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:alt" content="{{ og_image_alt|default:'FindIt Campus' }}">
+    <meta property="og:site_name" content="FindIt Campus">
+    <meta property="og:locale" content="es_MX">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ title|default:'FindIt Campus' }}">
+    <meta name="twitter:description" content="{{ og_description|default:'App web para ayudar a los alumnos a reportar, buscar y encontrar objetos perdidos dentro del campus universitario.' }}">
+    <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{% static 'og.jpg' %}">
+    <meta name="twitter:image:alt" content="{{ og_image_alt|default:'FindIt Campus' }}">
+
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    
+    {% block extra_style %}{% endblock extra_style %}
+</head>
+
+<body>
+    {% block content %}{% endblock content %}
+
+    {% block extra_script %}{% endblock extra_script %}
+</body>
+
+</html>
