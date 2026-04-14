@@ -46,10 +46,10 @@
                         </div>
                     </div>
 
-                    {% if error %}
-                    <p class="text-red-600 text-sm text-center">
-                        {{ error }}
-                    </p>
+                    {% if form.errors %}
+                        <p class="text-red-600 text-sm text-center">
+                            Usuario o contraseña incorrectos
+                        </p>
                     {% endif %}
 
                     <button type="submit" class="w-full h-12 bg-slate-900 text-white font-bold rounded-lg mt-6">
