@@ -47,9 +47,17 @@
                     </div>
 
                     {% if form.errors %}
-                        <p class="text-red-600 text-sm text-center">
-                            Usuario o contraseña incorrectos
-                        </p>
+                        <div class="text-red-600 text-sm text-center bg-red-300/75 p-3 rounded-lg">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
                     {% endif %}
 
                     <button type="submit" class="w-full h-12 bg-slate-900 text-white font-bold rounded-lg mt-6">
