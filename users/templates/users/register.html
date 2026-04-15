@@ -1,0 +1,43 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'users/styles/auth.css' %}">
+{% endblock extra_style %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    {{ form.institutional_email }}
+    {{ form.tuition }}
+    {{ form.first_name }}
+    {{ form.last_name }}
+    {{ form.phone }}
+    {{ form.role }}
+
+    <input type="password" name="password" placeholder="Contraseña">
+    <input type="password" name="confirm_password" placeholder="Confirmar contraseña">
+
+    {% if form.errors %}
+        <div>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            {% endfor %}
+
+            {% for error in form.non_field_errors %}
+                <p>{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <button type="submit">Registrarse</button>
+</form>
+{% endblock content %}
+
+{% block extra_script %}
+<script src="{% static 'users/js/login.js' %}"></script>
+{% endblock extra_script %}
