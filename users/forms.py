@@ -35,8 +35,7 @@ class RegisterForm(forms.ModelForm):
             'tuition',
             'first_name',
             'last_name',
-            'phone',
-            'role'
+            'phone'
         ]
 
     def clean_institutional_email(self):
@@ -44,8 +43,19 @@ class RegisterForm(forms.ModelForm):
 
         if not email.endswith('@uanl.edu.mx'):
             raise forms.ValidationError('El correo debe ser institucional')
+        
+        if User.objects.filter(institutional_email=email).exists():
+            raise forms.ValidationError('Ya existe un usuario con este correo')
 
         return email
+    
+    def clean_tuition(self):
+        tuition = self.cleaned_data.get('tuition')
+
+        if User.objects.filter(tuition=tuition).exists():
+            raise forms.ValidationError('Ya existe un usuario con esta matrícula')
+
+        return tuition
 
     def clean(self):
         cleaned_data = super().clean()

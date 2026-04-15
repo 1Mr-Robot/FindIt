@@ -7,35 +7,115 @@
 {% endblock extra_style %}
 
 {% block content %}
-<form method="post">
-    {% csrf_token %}
+<div id="register-page" class="page">
+    <div class="w-full flex flex-col items-center justify-center min-h-screen p-4">
+        <div class="w-full bg-primary-light rounded-2xl overflow-hidden max-w-[500px] shadow-2xl">
+            <div class="flex flex-col items-center p-12">
+                <div class="mb-8 flex flex-col items-center gap-4">
+                    <div class="size-16 bg-white rounded-full flex items-center justify-center shadow-lg">
+                        <span class="material-symbols-outlined text-primary-light text-4xl">school</span>
+                    </div>
+                    <div class="text-center">
+                        <h1 class="text-white text-2xl font-bold tracking-tight">Regístrate aquí</h1>
+                        <p class="text-white/80 text-sm font-light mt-1">Sistema de objetos perdidos</p>
+                    </div>
+                </div>
+                
+                <form method="post" class="w-full space-y-5">
+                    {% csrf_token %}
 
-    {{ form.institutional_email }}
-    {{ form.tuition }}
-    {{ form.first_name }}
-    {{ form.last_name }}
-    {{ form.phone }}
-    {{ form.role }}
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Nombre</label>
+                        <div class="relative">
+                            <input name="first_name" class="form-input rounded-lg placeholder:text-slate-400" placeholder="Chalino" type="text" required/>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300">person</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Apellidos</label>
+                        <div class="relative">
+                            <input name="last_name" class="form-input rounded-lg placeholder:text-slate-400" placeholder="Sánchez Féliz" type="text" required/>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300">person</span>
+                        </div>
+                    </div>
 
-    <input type="password" name="password" placeholder="Contraseña">
-    <input type="password" name="confirm_password" placeholder="Confirmar contraseña">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Matrícula</label>
+                        <div class="relative">
+                            <input name="tuition" class="form-input rounded-lg placeholder:text-slate-400" placeholder="1234567" type="text" inputmode="numeric" maxlength="7" minlength="7" oninput="this.value = this.value.replace(/\D/g, '')" required/>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300">badge</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Correo universitario</label>
+                        <div class="relative">
+                            <input name="institutional_email" class="form-input rounded-lg placeholder:text-slate-400" placeholder="chalino@uanl.edu.mx" type="email" required/>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300">mail</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Celular (opcional)</label>
+                        <div class="relative">
+                            <input name="phone" class="form-input rounded-lg placeholder:text-slate-400" placeholder="8123456789" type="text" inputmode="numeric" maxlength="10" minlength="10" oninput="this.value = this.value.replace(/\D/g, '')"/>
+                            <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300">phone</span>
+                        </div>
+                    </div>
 
-    {% if form.errors %}
-        <div>
-            {% for field in form %}
-                {% for error in field.errors %}
-                    <p>{{ error }}</p>
-                {% endfor %}
-            {% endfor %}
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Contraseña</label>
+                        <div class="relative">
+                            <input name="password" id="login-pass-1" class="form-input rounded-lg placeholder:text-slate-400" placeholder="Crea una contraseña" type="password" required/>
+                            <span id="toggle-password-1" class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 cursor-pointer">visibility</span>
+                        </div>
+                    </div>
 
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
+                    <div class="flex flex-col gap-2">
+                        <label class="text-white text-sm font-medium ml-1">Confirmar contraseña</label>
+                        <div class="relative">
+                            <input name="confirm_password" id="login-pass-2" class="form-input rounded-lg placeholder:text-slate-400" placeholder="Repite tu contraseña" type="password" required/>
+                            <span id="toggle-password-2" class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 cursor-pointer">visibility</span>
+                        </div>
+                    </div>
+
+                    {% if form.errors %}
+                        <div class="text-red-600 text-sm text-center bg-red-300/75 p-3 rounded-lg">
+                            {% for field in form %}
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            {% endfor %}
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <button type="submit" class="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white font-bold rounded-lg shadow-lg transition-colors mt-6 flex items-center justify-center gap-2 group">
+                        <span>Registrar</span>
+                        <span class="material-symbols-outlined text-lg group-hover:scale-110 transition-transform">person_add</span>
+                    </button>
+
+                    <div class="text-center mt-6">
+                        <p class="text-white text-sm">
+                            ¿Ya tienes una cuenta? <a href="{% url 'login' %}"
+                                class="font-bold hover:underline cursor-pointer">Inicia sesión aquí</a>
+                        </p>
+                    </div>
+                </form>
+                
+                <div class="mt-8 pt-6 border-t border-white/10 w-full text-center">
+                    <p class="text-white/70 text-xs">
+                        © 2026 FindIt Campus. <br/>
+                        All rights reserved.
+                    </p>
+                </div>
+            </div>
         </div>
-    {% endif %}
-
-    <button type="submit">Registrarse</button>
-</form>
+    </div>
+</div>
 {% endblock content %}
 
 {% block extra_script %}
