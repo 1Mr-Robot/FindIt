@@ -1,14 +1,7 @@
 from django.urls import path
-from django.contrib.auth import views as auth_views
-from .views import register_view
-from .forms import LoginForm
+from .views import login_view, register_view
 
 urlpatterns = [
-    path(
-        '',
-        auth_views.LoginView.as_view(
-            template_name='users/login.html',
-            authentication_form=LoginForm
-        ), name='login'),
+    path('', login_view.as_view(), name='login'),
     path('register/', register_view, name='register'),
 ]
