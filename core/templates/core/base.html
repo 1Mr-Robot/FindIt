@@ -83,7 +83,37 @@
         <h1 class="font-bold tracking-tight text-slate-800 text-4xl" style="font-family: 'Times New Roman', serif;">
             FindIt Campus
         </h1>
+        <button onclick="toggleMenu()" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-full transition-colors">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
     </header>
+
+    <div id="menu-overlay" class="hidden fixed inset-0 bg-black/50 z-40" onclick="toggleMenu()"></div>
+    <nav id="side-menu" class="hidden menu-overlay fixed right-0 top-0 h-full w-64 bg-white dark:bg-slate-800 shadow-xl z-50 p-6 overflow-y-auto">
+        <button onclick="toggleMenu()" class="absolute top-4 right-4 p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        
+        <div class="mt-8 space-y-2">
+            <button onclick="goToProfile()" class="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-left">
+                <span class="material-symbols-outlined">person</span>
+                <span>Mi Perfil</span>
+            </button>
+            <button onclick="goToReport()" class="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-left">
+                <span class="material-symbols-outlined">add_circle</span>
+                <span>Reportar Objeto</span>
+            </button>
+            <button onclick="goToMyItems()" class="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-left">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span>Mis Reportes</span>
+            </button>
+            <hr class="my-4 border-slate-200 dark:border-slate-700"/>
+            <button onclick="goToLogin()" class="w-full flex items-center gap-3 p-3 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors text-left text-red-600">
+                <span class="material-symbols-outlined">logout</span>
+                <span>Cerrar Sesión</span>
+            </button>
+        </div>
+    </nav>
 
     <main class="max-w-4xl mx-auto px-4 py-8">
         {% block content %}{% endblock content %}    
@@ -93,6 +123,7 @@
         <p>© 2026 FindIt University. Todos los derechos reservados.</p>
     </footer>
     
+    <script src="{% static 'core/JS/navbar.js' %}"></script>
     {% block extra_script %}{% endblock extra_script %}
 </body>
 

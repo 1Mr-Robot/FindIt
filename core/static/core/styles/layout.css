@@ -25,6 +25,19 @@ body {
     }
 }
 
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.menu-overlay {
+    animation: slideIn 0.3s ease-out;
+}
+
 /* Scrollbar personalizado */
 ::-webkit-scrollbar {
     width: 8px;
