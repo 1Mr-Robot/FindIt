@@ -23,13 +23,6 @@ class CampusZoneAdmin(admin.ModelAdmin):
     list_filter = ['is_active',]
     date_hierarchy = 'created'
 
-@admin.register(ItemStatus)
-class ItemStatusAdmin(admin.ModelAdmin):
-    readonly_fields = ('created', 'modified')
-    list_display = ('status', 'created', 'modified')
-    search_fields = ('status',)
-    date_hierarchy = 'created'
-
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'modified')

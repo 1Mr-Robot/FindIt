@@ -34,20 +34,15 @@ class CampusZone(models.Model):
     def __str__(self):
         return self.zone
 
-
-class ItemStatus(models.Model):
-    status = models.CharField(max_length=100, unique=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return self.status
-
 # -------------------------
 # ITEM
 # -------------------------
 
 class Item(models.Model):
+    class Status(models.TextChoices):
+        LOST = 'Lost', 'Perdido'
+        FOUND = 'Found', 'Encontrado'
+
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True)
     category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE)
@@ -55,7 +50,7 @@ class Item(models.Model):
     zone = models.ForeignKey(CampusZone, on_delete=models.CASCADE)
     image = models.ImageField(upload_to='items/')
     found_date = models.DateTimeField(default=timezone.now)
-    status = models.ForeignKey(ItemStatus, on_delete=models.CASCADE)
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.LOST)
     creator_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)

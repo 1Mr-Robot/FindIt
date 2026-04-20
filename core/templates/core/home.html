@@ -2,6 +2,51 @@
 
 {% load static %}
 
+{% block title %}Inicio | FindIt Campus{% endblock title %}
+
 {% block content %}
-<h1>home</h1>
+    <!-- Buscador action="% url 'recientes' %"-->
+    <form method="GET"  class="flex gap-2 mb-10">
+        <input name="q" class="flex-1 rounded-lg px-4 py-3 border border-slate-200 focus:ring-2 focus:ring-green-500"
+            placeholder="¿Qué estás buscando?" type="text" />
+        <button type="submit"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg">Buscar</button>
+    </form>
+
+    <!-- Acciones rápidas -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+        <a href="reportar_perdido"
+            class="bg-white text-slate-800 font-bold py-6 px-4 rounded-xl border border-slate-200">Reportar objeto
+            perdido</a>
+        <a href="reportar_encontrado" class="bg-green-600 text-white font-bold py-6 px-4 rounded-xl">Reportar
+            objeto encontrado</a>
+    </section>
+
+    <!-- Objetos recientes -->
+    <section>
+        <h2 class="text-2xl font-bold text-slate-800 mb-6">Objetos recientemente publicados</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in items %}
+                <article class="bg-white rounded-xl overflow-hidden border border-slate-100">
+                    <div class="aspect-video bg-slate-200 relative overflow-hidden">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover" />
+                        {% endif %}
+                        <span class="absolute top-2 right-2 {% if item.status == 'Lost' %} bg-red-500 {% else %} bg-green-500 {% endif %} text-white text-xs font-bold px-2 py-1 rounded">
+                            {{ item.get_status_display }}
+                        </span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-1 truncate">{{ item.name }}</h3>
+                        <p class="text-slate-500 text-sm">{{ item.zone }}</p>
+                        <div class="flex items-center justify-between mt-4 text-xs text-slate-400">
+                            <span>Publicado {{ item.created|timesince }} atrás</span>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <p>No hay objetos publicados aún.</p>
+            {% endfor %}
+        </div>
+    </section>
 {% endblock content %}
