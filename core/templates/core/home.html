@@ -14,12 +14,14 @@
     </form>
 
     <!-- Acciones rápidas -->
-    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+    <section class="mb-12">
         <a href="reportar_perdido"
-            class="bg-white text-slate-800 font-bold py-6 px-4 rounded-xl border border-slate-200">Reportar objeto
-            perdido</a>
-        <a href="reportar_encontrado" class="bg-green-600 text-white font-bold py-6 px-4 rounded-xl">Reportar
-            objeto encontrado</a>
+            class="flex items-center justify-center gap-3 bg-red-400 text-white text-slate-800 font-bold py-6 px-4 rounded-xl border border-slate-200">
+            <span class="material-symbols-outlined">
+                crisis_alert
+            </span>
+            Reportar objeto perdido
+        </a>
     </section>
 
     <!-- Objetos recientes -->
@@ -27,7 +29,7 @@
         <h2 class="text-2xl font-bold text-slate-800 mb-6">Objetos recientemente publicados</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for item in items %}
-                <article class="bg-white rounded-xl overflow-hidden border border-slate-100">
+                <article class="bg-white rounded-xl overflow-hidden border border-slate-100 cursor-pointer hover:shadow-lg transition-shadow" onclick="openItemModal('{{ item.id }}')">
                     <div class="aspect-video bg-slate-200 relative overflow-hidden">
                         {% if item.image %}
                             <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover" />
@@ -44,9 +46,49 @@
                         </div>
                     </div>
                 </article>
+                <div id="item-modal-{{ item.id }}" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+                    <div class="absolute inset-0 bg-black/50" onclick="closeItemModal('{{ item.id }}')"></div>
+                    <div class="relative bg-white dark:bg-slate-800 rounded-xl p-6 max-w-lg w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto">
+                        <button type="button" onclick="closeItemModal('{{ item.id }}')" class="absolute top-7 right-7 p-1 w-8 h-8 bg-slate-100/50 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                        <div class="aspect-video bg-slate-200 rounded-lg overflow-hidden mb-4">
+                            {% if item.image %}
+                                <img src="{{ item.image.url }}" alt="{{ item.name }}" class="w-full h-full object-cover" />
+                            {% endif %}
+                        </div>
+                        <span class="inline-block {% if item.status == 'Lost' %} bg-red-500 {% else %} bg-green-500 {% endif %} text-white text-xs font-bold px-2 py-1 rounded mb-3">
+                            {{ item.get_status_display }}
+                        </span>
+                        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">{{ item.name }}</h3>
+                        <p class="text-slate-600 dark:text-slate-300 mb-4">{{ item.description|default:"Sin descripción" }}</p>
+                        <div class="space-y-2 text-sm">
+                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Categoría:</span> {{ item.category.category }}</p>
+                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Color:</span> {{ item.color.color }}</p>
+                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Zona:</span> {{ item.zone.zone }}</p>
+                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Fecha:</span> {{ item.found_date|date:"d/m/Y H:i" }}</p>
+                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Reportado por:</span> {{ item.creator_user.first_name }} {{ item.creator_user.last_name }}</p>
+                        </div>
+                        {% if is_staff and item.status == 'Lost' %}
+                            <form method="POST" action="{% url 'item_found' item.id %}" class="mt-6">
+                                {% csrf_token %}
+                                <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Marcar como encontrado</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
             {% empty %}
                 <p>No hay objetos publicados aún.</p>
             {% endfor %}
         </div>
     </section>
+
+    <script>
+        function openItemModal(id) {
+            document.getElementById('item-modal-' + id).classList.remove('hidden');
+        }
+        function closeItemModal(id) {
+            document.getElementById('item-modal-' + id).classList.add('hidden');
+        }
+    </script>
 {% endblock content %}
