@@ -23,7 +23,7 @@ class LostItemForm(forms.ModelForm):
         queryset=ItemCategory.objects.all(),
         empty_label="Selecciona una categoría",
         widget=forms.Select(attrs={
-            'class': 'w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-transparent transition-all appearance-none cursor-pointer'
+            'class': 'w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-transparent transition-all appearance-none cursor-pointer custom-select'
         })
     )
     color = forms.ModelChoiceField(
@@ -31,7 +31,7 @@ class LostItemForm(forms.ModelForm):
         queryset=ItemColor.objects.all(),
         empty_label="Selecciona un color",
         widget=forms.Select(attrs={
-            'class': 'w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-transparent transition-all appearance-none cursor-pointer'
+            'class': 'w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-transparent transition-all appearance-none cursor-pointer custom-select'
         })
     )
     zone = forms.ModelChoiceField(
@@ -39,7 +39,7 @@ class LostItemForm(forms.ModelForm):
         queryset=CampusZone.objects.filter(is_active=True),
         empty_label="Selecciona una zona",
         widget=forms.Select(attrs={
-            'class': 'w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-transparent transition-all appearance-none cursor-pointer'
+            'class': 'w-full px-4 py-3 bg-white/10 border border-white/30 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-brandGreen focus:border-transparent transition-all appearance-none cursor-pointer custom-select'
         })
     )
     image = forms.ImageField(
