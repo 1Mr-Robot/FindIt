@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import JsonResponse
 from .models import Item
+from .forms import LostItemForm
 
 @login_required
 def home(request):
@@ -31,3 +33,19 @@ def item_found(request, item_id):
         item.status = Item.Status.FOUND
         item.save()
     return redirect('home')
+
+@login_required
+def report_object(request):
+    if request.method == "POST":
+        form = LostItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            item = form.save(commit=False)
+            item.creator_user = request.user
+            item.status = Item.Status.LOST
+            item.save()
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse({'success': True})
+            return redirect('home')
+    else:
+        form = LostItemForm()
+    return render(request, "core/form_lost_item.html", {"form": form})

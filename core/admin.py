@@ -26,9 +26,9 @@ class CampusZoneAdmin(admin.ModelAdmin):
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     readonly_fields = ('created', 'modified')
-    list_display = ('name', 'category', 'zone', 'found_date', 'status', 'creator_user')
+    list_display = ('name', 'category', 'zone', 'lost_date', 'status', 'creator_user')
     search_fields = ('name', 'category', 'zone',)
-    list_filter = ['category', 'zone', 'found_date', 'status', 'created']
+    list_filter = ['category', 'zone', 'lost_date', 'status', 'created']
     date_hierarchy = 'created'
 
 @admin.register(Claim)

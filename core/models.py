@@ -43,17 +43,18 @@ class Item(models.Model):
         LOST = 'Lost', 'Perdido'
         FOUND = 'Found', 'Encontrado'
 
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True)
-    category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE)
-    color = models.ForeignKey(ItemColor, on_delete=models.CASCADE)
-    zone = models.ForeignKey(CampusZone, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='items/')
-    found_date = models.DateTimeField(default=timezone.now)
-    status = models.CharField(max_length=10, choices=Status.choices, default=Status.LOST)
-    creator_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    name = models.CharField(max_length=255, verbose_name="Nombre del objeto")
+    description = models.TextField(blank=True, verbose_name="Descripción del objeto")
+    category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE, verbose_name="Categoría")
+    color = models.ForeignKey(ItemColor, on_delete=models.CASCADE, verbose_name="Color")
+    zone = models.ForeignKey(CampusZone, on_delete=models.CASCADE, verbose_name="Zona")
+    image = models.ImageField(upload_to='items/', verbose_name="Imagen del objeto")
+    lost_date = models.DateTimeField(default=timezone.now, verbose_name="Fecha en que se perdió")
+    contact_info = models.CharField(max_length=255, verbose_name="Información de contacto")
+    status = models.CharField(max_length=10, choices=Status.choices, default=Status.LOST, verbose_name="Estado del objeto")
+    creator_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="Usuario que reportó el objeto")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    modified = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
 
     def __str__(self):
         return self.name

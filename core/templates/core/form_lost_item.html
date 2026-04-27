@@ -1,0 +1,251 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Reportar objeto perdido | FindIt Campus{% endblock title %}
+
+{% block extra_style %}
+<style>
+    .brandGreen { color: #2D7A32; }
+    .bg-brandGreen { background-color: #2D7A32; }
+    .hover\:bg-brandGreen:hover { background-color: #2D7A32; }
+    .ring-brandGreen { --tw-ring-color: #2D7A32; }
+    
+    .form-bg {
+        background: linear-gradient(135deg, rgba(45, 122, 50, 0.9) 0%, rgba(34, 84, 61, 0.95) 100%);
+        backdrop-filter: blur(10px);
+    }
+    
+    .glass-card {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .custom-select {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='white' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1.5em 1.5em;
+    }
+    
+    input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+        filter: invert(1);
+        cursor: pointer;
+    }
+    
+    .image-upload-area {
+        transition: all 0.3s ease;
+    }
+    
+    .image-upload-area:hover {
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.6);
+    }
+    
+    .image-upload-area.has-image {
+        border-style: solid;
+        border-color: #5CB85C;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.95); }
+        to { opacity: 1; transform: scale(1); }
+    }
+    
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+    
+    .success-modal {
+        animation: fadeIn 0.3s ease-out;
+    }
+</style>
+{% endblock extra_style %}
+
+{% block content %}
+<div class="min-h-[calc(100vh-200px)] flex items-center justify-center py-12 px-4">
+    <div class="w-full max-w-2xl">
+        <div class="form-bg rounded-2xl shadow-2xl p-8 md:p-10">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-full mb-4">
+                    <span class="material-symbols-outlined text-4xl text-white">search_check</span>
+                </div>
+                <h2 class="text-3xl font-display font-bold text-white">Reportar Objeto Perdido</h2>
+                <p class="text-white/80 mt-2">Ayúdanos a encontrar tu objeto pronto</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="space-y-6" id="lost-item-form">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label class="block text-white font-medium text-sm mb-2">Nombre del objeto</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-white font-medium text-sm mb-2">Descripción</label>
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.description.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-white font-medium text-sm mb-2">Categoría</label>
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.category.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-white font-medium text-sm mb-2">Color</label>
+                        {{ form.color }}
+                        {% if form.color.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.color.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-white font-medium text-sm mb-2">Zona del campus</label>
+                        {{ form.zone }}
+                        {% if form.zone.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.zone.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        <label class="block text-white font-medium text-sm mb-2">Fecha en que se perdió</label>
+                        {{ form.lost_date }}
+                        {% if form.lost_date.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.lost_date.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-white font-medium text-sm mb-2">Información de contacto</label>
+                        {{ form.contact_info }}
+                        {% if form.contact_info.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.contact_info.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="md:col-span-2">
+                        <label class="block text-white font-medium text-sm mb-2">Fotografía del objeto (opcional)</label>
+                        <div id="image-upload-container" class="image-upload-area border-2 border-dashed border-white/40 rounded-xl p-8 flex flex-col items-center justify-center cursor-pointer hover:bg-white/10 transition-all" onclick="document.getElementById('id_image').click()">
+                            <input type="file" id="id_image" name="image" accept="image/*" class="hidden" onchange="handleImageSelect(event)">
+                            <div id="image-preview-container" class="hidden w-full mb-4">
+                                <img id="image-preview" class="max-h-48 mx-auto rounded-lg shadow-lg" src="" alt="Preview">
+                            </div>
+                            <span id="upload-icon" class="material-symbols-outlined text-5xl text-white/70 mb-2">add_photo_alternate</span>
+                            <span id="upload-text" class="text-white font-semibold">Seleccionar imagen</span>
+                            <span class="text-white/60 text-sm mt-1">PNG, JPG, GIF hasta 10MB</span>
+                        </div>
+                        {% if form.image.errors %}
+                        <p class="text-red-300 text-sm mt-1">{{ form.image.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="pt-6 flex justify-center">
+                    <button type="submit"
+                        class="w-full md:w-2/3 bg-white text-brandGreen font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-gray-100 hover:shadow-xl transition-all duration-300 text-lg flex items-center justify-center gap-2">
+                        <span class="material-symbols-outlined">publish</span>
+                        Publicar Reporte
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="success-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeSuccessModal()"></div>
+    <div class="success-modal relative bg-gradient-to-br from-green-600 to-green-700 rounded-2xl p-8 max-w-md w-full shadow-2xl text-center">
+        <div class="absolute -top-12 left-1/2 -translate-x-1/2 w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-xl">
+            <span class="material-symbols-outlined text-green-600 text-5xl">check_circle</span>
+        </div>
+        
+        <div class="mt-10 mb-6">
+            <h3 class="text-2xl font-display font-bold text-white mb-2">¡ReportePublicado!</h3>
+            <p class="text-white/90">Tu objeto ha sido reportado exitosamente. Ahora otros usuarios podrán ayudarte a encontrarlo.</p>
+        </div>
+        
+        <div class="flex gap-3">
+            <a href="{% url 'home' %}" class="flex-1 px-4 py-3 bg-white text-green-700 font-semibold rounded-xl hover:bg-gray-100 transition-colors">
+                Volver al inicio
+            </a>
+            <button onclick="closeSuccessModal()" class="flex-1 px-4 py-3 bg-white/20 text-white font-semibold rounded-xl hover:bg-white/30 transition-colors">
+                Reportar otro
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_script %}
+<script>
+    function handleImageSelect(event) {
+        const file = event.target.files[0];
+        const container = document.getElementById('image-upload-container');
+        const previewContainer = document.getElementById('image-preview-container');
+        const preview = document.getElementById('image-preview');
+        const uploadIcon = document.getElementById('upload-icon');
+        const uploadText = document.getElementById('upload-text');
+        
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                previewContainer.classList.remove('hidden');
+                uploadIcon.classList.add('hidden');
+                uploadText.textContent = file.name;
+                container.classList.add('has-image');
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    function closeSuccessModal() {
+        document.getElementById('success-modal').classList.add('hidden');
+    }
+    
+    {% if success %}
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('success-modal').classList.remove('hidden');
+    });
+    {% endif %}
+    
+    document.getElementById('lost-item-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const form = this;
+        const formData = new FormData(form);
+        
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById('success-modal').classList.remove('hidden');
+                form.reset();
+            } else {
+                form.submit();
+            }
+        })
+        .catch(() => {
+            form.submit();
+        });
+    });
+</script>
+{% endblock extra_script %}

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FindIt University - Home</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+
+<body class="text-slate-900" style="background-color: #e0e4e8;">
+
+  <header
+    class="sticky top-0 z-50 bg-white border-b border-slate-100 px-4 py-4 flex items-center justify-between shadow-sm">
+    <h1 class="font-bold tracking-tight text-slate-800 text-4xl" style="font-family: 'Times New Roman', serif;">FindIt
+      Campus</h1>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <!-- Buscador -->
+    <form method="GET" action="{% url 'recientes' %}" class="flex gap-2 mb-10">
+      <input name="q" class="flex-1 rounded-lg px-4 py-3 border border-slate-200 focus:ring-2 focus:ring-green-500"
+        placeholder="¿Qué estás buscando?" type="text" />
+      <button type="submit"
+        class="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg">Buscar</button>
+    </form>
+
+    <!-- Acciones rápidas -->
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+      <a href="{% url 'reportar_perdido' %}"
+        class="bg-white text-slate-800 font-bold py-6 px-4 rounded-xl border border-slate-200">Reportar objeto
+        perdido</a>
+      <a href="{% url 'reportar_encontrado' %}" class="bg-green-600 text-white font-bold py-6 px-4 rounded-xl">Reportar
+        objeto encontrado</a>
+    </section>
+
+    <!-- Objetos recientes -->
+    <section>
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">Objetos recientemente publicados</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for obj in objetos %}
+        <article class="bg-white rounded-xl overflow-hidden border border-slate-100">
+          <div class="aspect-video bg-slate-200 relative overflow-hidden">
+            {% if obj.imagen %}
+            <img src="{{ obj.imagen.url }}" alt="{{ obj.nombre }}" class="w-full h-full object-cover" />
+            {% endif %}
+            <span
+              class="absolute top-2 right-2 {% if obj.estado == 'perdido' %} bg-red-500 {% else %} bg-green-500 {% endif %} text-white text-xs font-bold px-2 py-1 rounded">
+              {{ obj.estado|title }}
+            </span>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-lg mb-1 truncate">{{ obj.nombre }}</h3>
+            <p class="text-slate-500 text-sm">{{ obj.ubicacion }}</p>
+            <div class="flex items-center justify-between mt-4 text-xs text-slate-400">
+              <span>Publicado {{ obj.fecha_publicacion|timesince }} atrás</span>
+            </div>
+          </div>
+        </article>
+        {% empty %}
+        <p>No hay objetos publicados aún.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
+
+  <footer class="mt-20 py-10 border-t border-slate-100 text-center text-slate-400 text-sm">
+    <p>© 2026 FindIt University. Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+
+</html>
