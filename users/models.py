@@ -42,6 +42,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.AutoField(primary_key=True)
     institutional_email = models.EmailField(unique=True, validators=[validate_uanl_email], verbose_name='Correo institucional')
     tuition = models.CharField(max_length=7, unique=True, validators=[validate_tuition], verbose_name='Matrícula')
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, verbose_name='Foto de perfil')
     first_name = models.CharField(max_length=150, verbose_name='Nombre')
     last_name = models.CharField(max_length=150, verbose_name='Apellidos')
     phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Teléfono')

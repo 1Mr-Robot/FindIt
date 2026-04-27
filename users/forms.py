@@ -75,3 +75,29 @@ class RegisterForm(forms.ModelForm):
             user.save()
 
         return user
+
+#Profile
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['avatar', 'first_name', 'last_name', 'phone']
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs.update({
+            'class': 'w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all',
+            'placeholder': 'Nombre'
+        })
+        self.fields['last_name'].widget.attrs.update({
+            'class': 'w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all',
+            'placeholder': 'Apellidos'
+        })
+        self.fields['phone'].widget.attrs.update({
+            'class': 'w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-green focus:border-transparent transition-all',
+            'placeholder': 'Teléfono'
+        })
+        self.fields['avatar'].widget.attrs.update({
+            'class': 'hidden',
+            'accept': 'image/*',
+            'onchange': 'previewAvatar(event)'
+        })
