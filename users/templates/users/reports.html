@@ -1,0 +1,94 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}Perfil | FindIt Campus{% endblock title %}
+
+{% block content %}
+<h2 class="text-2xl font-bold text-slate-800 dark:text-white mb-6">Estado de Tus Reportes</h2>
+
+{% for report in reports %}
+<div class="bg-white dark:bg-slate-800 rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 mb-4">
+    <div class="flex flex-col md:flex-row gap-6">
+        <div class="size-32 rounded-lg overflow-hidden flex-shrink-0 bg-slate-200 dark:bg-slate-700">
+            {% if report.image %}
+                <img alt="{{ report.name }}" class="w-full h-full object-cover" src="{{ report.image.url }}"/>
+            {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-600">
+                    <span class="material-symbols-outlined text-slate-400">image</span>
+                </div>
+            {% endif %}
+        </div>
+        <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">{{ report.name }}</h3>
+                <span class="inline-block {% if report.status == 'Lost' %}bg-red-500{% else %}bg-green-500{% endif %} text-white text-xs font-bold px-2 py-1 rounded mb-3">
+                    {% if report.status == 'Lost' %}Perdido{% else %}Encontrado{% endif %}
+                </span>
+            </div>
+            <p class="text-slate-600 dark:text-slate-400 mb-2">Ubicación: {{ report.zone.zone }}</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Reportado hace 2 días</p>
+            <button onclick="openItemModal('{{ report.id }}')" class="px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-primary-green/80 transition-colors text-sm font-semibold">
+                Ver estado
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="item-modal-{{ report.id }}" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeItemModal('{{ report.id }}')"></div>
+    <div class="relative bg-white dark:bg-slate-800 rounded-xl p-6 max-w-lg w-full mx-4 shadow-2xl max-h-[90vh] overflow-y-auto animate-fadeIn">
+        <button type="button" onclick="closeItemModal('{{ report.id }}')" class="absolute top-4 right-4 p-1 w-8 h-8 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 dark:hover:bg-slate-600 rounded-full transition-colors">
+            <span class="material-symbols-outlined">close</span>
+        </button>
+        <div class="aspect-video bg-slate-200 rounded-lg overflow-hidden mb-4">
+            {% if report.image %}
+                <img src="{{ report.image.url }}" alt="{{ report.name }}" class="w-full h-full object-cover" />
+            {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-slate-200 dark:bg-slate-600">
+                    <span class="material-symbols-outlined text-slate-400 text-5xl">image</span>
+                </div>
+            {% endif %}
+        </div>
+        <span class="inline-block {% if report.status == 'Lost' %}bg-red-500{% else %}bg-green-500{% endif %} text-white text-xs font-bold px-2 py-1 rounded mb-3">
+            {% if report.status == 'Lost' %}Perdido{% else %}Encontrado{% endif %}
+        </span>
+        <h3 class="text-xl font-bold text-slate-800 dark:text-white mb-2">{{ report.name }}</h3>
+        <p class="text-slate-600 dark:text-slate-300 mb-4">{{ report.description|default:"Sin descripción" }}</p>
+        <div class="space-y-2 text-sm">
+            <p><span class="font-medium text-slate-700 dark:text-slate-200">Categoría:</span> {{ report.category.category }}</p>
+            <p><span class="font-medium text-slate-700 dark:text-slate-200">Color:</span> {{ report.color.color }}</p>
+            <p><span class="font-medium text-slate-700 dark:text-slate-200">Zona:</span> {{ report.zone.zone }}</p>
+            <p><span class="font-medium text-slate-700 dark:text-slate-200">Fecha:</span> {{ report.lost_date|date:"d/m/Y H:i" }}</p>
+        </div>
+        {% if user.is_staff and report.status == 'Lost' %}
+            <form method="POST" action="{% url 'item_found' report.id %}" class="mt-6">
+                {% csrf_token %}
+                <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">Marcar como encontrado</button>
+            </form>
+        {% endif %}
+    </div>
+</div>
+{% empty %}
+<div class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700 p-4 rounded-lg mb-4">
+    <p class="font-semibold">No has reportado ningún objeto perdido aún.</p>
+    <p>¡Empieza a reportar objetos perdidos para mantener tu campus seguro!</p>
+    <a href="{% url 'report_object' %}" class="inline-block mt-3 px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-primary-green/80 transition-colors text-sm font-semibold">
+        Reportar un Objeto
+    </a>
+</div>
+{% endfor %}
+{% endblock content %}
+
+
+{% block extra_script %}
+<script>
+    function openItemModal(id) {
+        document.getElementById(`item-modal-${id}`).classList.remove('hidden');
+    }
+    function closeItemModal(id) {
+        document.getElementById(`item-modal-${id}`).classList.add('hidden');
+    }
+</script>
+{% endblock extra_script %}
+    

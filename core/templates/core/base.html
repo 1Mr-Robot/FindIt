@@ -115,10 +115,10 @@
                 <span class="material-symbols-outlined">add_circle</span>
                 <span>Reportar Objeto</span>
             </a>
-            <button onclick="goToMyItems()" class="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-left">
+            <a href="{% url 'reports' %}" class="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-left">
                 <span class="material-symbols-outlined">inventory_2</span>
                 <span>Mis Reportes</span>
-            </button>
+            </a>
             {% if user.is_staff %}
                 <a href="{% url 'admin:index' %}" class="w-full flex items-center gap-3 p-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors text-left">
                     <span class="material-symbols-outlined">admin_panel_settings</span>
@@ -137,7 +137,7 @@
         {% block content %}{% endblock content %}    
     </main>
 
-    <footer class="mt-20 py-10 border-t border-slate-100 text-center text-slate-400 text-sm">
+    <footer class="mt-2 py-10 border-t border-slate-100 text-center text-slate-400 text-sm">
         <p>© 2026 FindIt Campus. Todos los derechos reservados.</p>
     </footer>
 

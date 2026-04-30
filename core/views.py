@@ -18,7 +18,7 @@ def home(request):
             Q(zone__zone__icontains=query)
         )
 
-    items = items.order_by('-created')[:6]
+    items = items.order_by('-created')
 
     return render(request, 'core/home.html', {
         'items': items,

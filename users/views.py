@@ -46,6 +46,15 @@ def profile_view(request):
     })
 
 @login_required
+def reports_view(request):
+    user = request.user
+    reports = user.item_set.all().order_by('-created')
+    
+    return render(request, 'users/reports.html', {
+        'reports': reports
+    })
+
+@login_required
 @require_http_methods(["POST"])
 def update_profile_view(request):
     user = request.user
