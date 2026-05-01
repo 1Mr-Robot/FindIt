@@ -27,7 +27,7 @@
                 </span>
             </div>
             <p class="text-slate-600 dark:text-slate-400 mb-2">Ubicación: {{ report.zone.zone }}</p>
-            <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Reportado hace 2 días</p>
+            <p class="text-slate-500 dark:text-slate-400 text-sm mb-4">Reportado {{ report.created|timesince }} atrás</p>
             <button onclick="openItemModal('{{ report.id }}')" class="px-4 py-2 bg-primary-green text-white rounded-lg hover:bg-primary-green/80 transition-colors text-sm font-semibold">
                 Ver estado
             </button>

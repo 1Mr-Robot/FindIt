@@ -7,29 +7,41 @@ from django.utils import timezone
 # -------------------------
 
 class ItemCategory(models.Model):
-    category = models.CharField(max_length=255, unique=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    category = models.CharField(max_length=255, unique=True, verbose_name="Nombre")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    modified = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
+
+    class Meta:
+        verbose_name = "Categoría de objeto"
+        verbose_name_plural = "Categorías de objetos"
 
     def __str__(self):
         return self.category
 
 
 class ItemColor(models.Model):
-    color = models.CharField(max_length=100, unique=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    color = models.CharField(max_length=100, unique=True, verbose_name="Nombre")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    modified = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
+
+    class Meta:
+        verbose_name = "Color de objeto"
+        verbose_name_plural = "Colores de objetos"
 
     def __str__(self):
         return self.color
 
 
 class CampusZone(models.Model):
-    zone = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True)
-    is_active = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
+    zone = models.CharField(max_length=255, unique=True, verbose_name="Nombre")
+    description = models.TextField(blank=True, verbose_name="Descripción")
+    is_active = models.BooleanField(default=True, verbose_name="Activa")
+    created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
+    modified = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
+
+    class Meta:
+        verbose_name = "Zona del campus"
+        verbose_name_plural = "Zonas del campus"
 
     def __str__(self):
         return self.zone
@@ -56,21 +68,9 @@ class Item(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
     modified = models.DateTimeField(auto_now=True, verbose_name="Fecha de modificación")
 
+    class Meta:
+        verbose_name = "Objeto"
+        verbose_name_plural = "Objetos"
+
     def __str__(self):
         return self.name
-
-# -------------------------
-# CLAIM
-# -------------------------
-
-class Claim(models.Model):
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    proof_description = models.TextField()
-    receipt_code = models.CharField(max_length=25, unique=True)
-    resolved = models.DateTimeField(default=timezone.now)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"Claim {self.receipt_code}"

@@ -30,11 +30,3 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ('name', 'category', 'zone',)
     list_filter = ['category', 'zone', 'lost_date', 'status', 'created']
     date_hierarchy = 'created'
-
-@admin.register(Claim)
-class ClaimAdmin(admin.ModelAdmin):
-    readonly_fields = ('created', 'modified')
-    list_display = ('item', 'user', 'receipt_code', 'resolved', 'created')
-    search_fields = ('item', 'user', 'receipt_code',)
-    list_filter = ['resolved']
-    date_hierarchy = 'created'
