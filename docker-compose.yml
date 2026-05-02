@@ -1,7 +1,7 @@
 services:
   db:
     image: mysql:8
-    container_name: db-findit
+    container_name: findit-db
     restart: always
     env_file:
       - .env
@@ -19,7 +19,8 @@ services:
 
   web:
     build: .
-    container_name: web-findit
+    container_name: findit-web
+    restart: always
     expose:
       - "8000"
     volumes:
@@ -34,7 +35,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: nginx-findit
+    container_name: findit-nginx
     restart: always
     ports:
       - "8008:80" # Puerto de entrada
