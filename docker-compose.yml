@@ -3,6 +3,10 @@ services:
     image: mysql:8
     container_name: findit-db
     restart: always
+    expose:
+      - "3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
     env_file:
       - .env
     environment:
@@ -10,10 +14,6 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-    ports:
-      - "3310:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
     networks:
       - findit
 
@@ -38,7 +38,7 @@ services:
     container_name: findit-nginx
     restart: always
     ports:
-      - "8008:80" # Puerto de entrada
+      - "${PORT}:80"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - static_volume:/app/static

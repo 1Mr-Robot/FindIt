@@ -113,14 +113,13 @@ python manage.py startapp <nombre_app>
 ## Estructura del Proyecto
 
 ```
-ProyectoAPS/
+FindIt/
 ├── manage.py
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── .env.example
 ├── .env
-├── db.sqlite3
-├── ProyectoAPS/          # Configuración Django
+├── FindIt/          # Configuración Django
 │   ├── settings.py
 │   ├── urls.py
 │   └── wsgi.py
