@@ -16,7 +16,7 @@
     <!-- Acciones rápidas -->
     <section class="mb-12">
         <a href="{% url 'report_object' %}"
-            class="flex items-center justify-center gap-3 bg-red-400 text-white text-slate-800 font-bold py-6 px-4 rounded-xl border border-slate-200">
+            class="flex items-center justify-center gap-3 bg-red-400 text-white text-slate-800 font-bold py-6 px-4 rounded-xl border border-slate-200 active:scale-95 transition-transform">
             <span class="material-symbols-outlined">
                 crisis_alert
             </span>
@@ -66,7 +66,7 @@
                             <p><span class="font-medium text-slate-700 dark:text-slate-200">Categoría:</span> {{ item.category.category }}</p>
                             <p><span class="font-medium text-slate-700 dark:text-slate-200">Color:</span> {{ item.color.color }}</p>
                             <p><span class="font-medium text-slate-700 dark:text-slate-200">Zona:</span> {{ item.zone.zone }}</p>
-                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Fecha:</span> {{ item.found_date|date:"d/m/Y H:i" }}</p>
+                            <p><span class="font-medium text-slate-700 dark:text-slate-200">Fecha:</span> {{ item.lost_date|date:"d/m/Y H:i" }}</p>
                             <p><span class="font-medium text-slate-700 dark:text-slate-200">Reportado por:</span> {{ item.creator_user.first_name }} {{ item.creator_user.last_name }}</p>
                         </div>
                         {% if is_staff and item.status == 'Lost' %}
