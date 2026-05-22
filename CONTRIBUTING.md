@@ -114,14 +114,52 @@ python manage.py startapp <nombre_app>
 
 ```
 FindIt/
-├── manage.py
-├── requirements.txt
-├── requirements-dev.txt
-├── .env.example
-├── .env
-├── FindIt/          # Configuración Django
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-└── venv/                # Entorno virtual (no incluir en git)
+├── manage.py                 # Script de administración Django
+├── requirements.txt          # Dependencias de producción
+├── requirements-dev.txt     # Dependencias de desarrollo
+├── .env.example             # Plantilla de variables de entorno
+├── .env                     # Variables de entorno (no incluir en git)
+├── .gitignore               # Archivos ignorados por Git
+├── Dockerfile               # Imagen Docker para producción
+├── docker-compose.yml       # Orquestación de servicios Docker
+├── nginx.conf               # Configuración del servidor Nginx
+├── entrypoint.sh            # Script de inicio para Docker
+├── LICENSE                  # Licencia del proyecto
+├── README.md                # Documentación principal
+├── .dockerignore            # Archivos ignorados en Docker
+├── FindIt/                  # Paquete de configuración del proyecto
+│   ├── __init__.py
+│   ├── settings.py          # Configuración principal de Django
+│   ├── urls.py              # Rutas principales del proyecto
+│   ├── wsgi.py              # Entry point para servidores WSGI
+│   └── asgi.py              # Entry point para servidores ASGI
+├── core/                    # App Django: gestión de objetos perdidos
+│   ├── __init__.py
+│   ├── models.py            # Modelos: Item, Claim, CampusZone
+│   ├── views.py             # Vistas: home, reportar objetos
+│   ├── forms.py             # Formularios: ReportItemForm
+│   ├── admin.py             # Configuración del admin de Django
+│   ├── urls.py              # Rutas de la app core
+│   ├── apps.py              # Configuración de la app
+│   ├── tests.py             # Pruebas unitarias
+│   ├── migrations/          # Migraciones de base de datos
+│   ├── static/core/         # CSS y JS estático
+│   └── templates/core/      # Plantillas HTML
+├── users/                   # App Django: gestión de usuarios
+│   ├── __init__.py
+│   ├── models.py            # Modelo User personalizado
+│   ├── views.py             # Vistas: login, register, profile
+│   ├── forms.py             # Formularios de autenticación
+│   ├── admin.py             # Configuración del admin
+│   ├── urls.py              # Rutas de la app users
+│   ├── apps.py              # Configuración de la app
+│   ├── tests.py             # Pruebas unitarias
+│   ├── migrations/          # Migraciones de base de datos
+│   ├── static/users/        # CSS, JS e imágenes estáticas
+│   └── templates/users/     # Plantillas HTML
+├── media/                   # Archivos subidos por usuarios (imágenes)
+│   ├── items/               # Imágenes de objetos perdidos
+│   └── avatars/             # Avatares de usuarios
+├── venv/                    # Entorno virtual Python (no incluir en git)
+└── .vscode/                 # Configuración de VS Code
 ```
