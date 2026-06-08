@@ -34,7 +34,7 @@ services:
       - findit
 
   nginx:
-    image: nginx:alpine
+    image: nginx:latest
     container_name: findit-nginx
     restart: always
     ports:
